@@ -74,7 +74,7 @@ class DataFilter extends React.Component {
     const none = null
 
     const filters = this.injectSelections()
-    const clearSelection = this.clearSelection()
+    const clearSelection = this.clearSelection
     const data = this.filterData()
 
     const { component, render, children, ...props } = this.props
