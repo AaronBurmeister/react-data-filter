@@ -1,0 +1,63 @@
+{
+  "name": "react-data-filter",
+  "version": "0.0.0",
+  "description": "Logical React component for data filtering",
+  "main": "index.js",
+  "scripts": {
+    "add-babel-polyfill": "./add-babel-polyfill.sh",
+    "compile": "./node_modules/.bin/babel -d lib/ src/",
+    "test": "npm run compile && ./node_modules/.bin/mocha --compilers js:babel-core/register",
+    "prepublish": "npm run compile",
+    "optimize": "npm run optimize:src; npm run optimize:test",
+    "optimize:src": "echo Optimizing /src...; import-sort -s ./src; echo Optimized $? files",
+    "optimize:test": "echo Optimizing /test...; import-sort -s ./test; echo Optimized $? files"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:AaronBurmeister/react-data-filter.git"
+  },
+  "keywords": [
+    "logical",
+    "component",
+    "filter",
+    "data",
+    "react"
+  ],
+  "author": "Aaron Burmeister",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AaronBurmeister/react-data-filter/issues"
+  },
+  "homepage": "https://github.com/AaronBurmeister/react-data-filter#readme",
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.0",
+    "babel-eslint": "^6.0.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.5.0",
+    "chai": "^4.1.0",
+    "eslint": "^2.10.2",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.0",
+    "eslint-plugin-jsx-a11y": "^1.2.2",
+    "eslint-plugin-react": "^5.1.1",
+    "import-sort-cli": "^3.3.0",
+    "import-sort-parser-babylon": "^3.2.0",
+    "import-sort-style-renke": "^3.0.0",
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-resolve-element": "^0.1.0"
+  },
+  "importSort": {
+    ".js,.jsx": {
+      "parser": "babylon",
+      "style": "renke"
+    }
+  }
+}
