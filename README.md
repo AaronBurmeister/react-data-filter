@@ -2,6 +2,8 @@
 
 A logical React component for data filtering
 
+[![NPM](https://nodei.co/npm/react-data-filter.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-data-filter/)
+
 ## Table of contents
  - [Logical](#logical)
  - [React](#react)
@@ -80,7 +82,7 @@ import DataFilter from 'react-data-filter';
   {...ownProps}
 >
   {ReactNode}
-</Restriction>
+</DataFilter>
 ```
 
 #### Properties
