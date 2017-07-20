@@ -1,6 +1,6 @@
 {
   "name": "react-data-filter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Logical React component for data filtering",
   "main": "index.js",
   "scripts": {
