@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import resolveElement, { renderProps } from 'react-resolve-element'
-import { set, uniq } from 'lodash'
+import _ from 'lodash'
 
 class DataFilter extends React.Component {
   static propTypes = {
@@ -36,7 +36,7 @@ class DataFilter extends React.Component {
   }
 
   updateSelection(filterKey, values) {
-    this.setState(set(this.state, ['selections', filterKey], values))
+    this.setState(_.set(this.state, ['selections', filterKey], values))
   }
 
   clearSelection() {
@@ -44,27 +44,34 @@ class DataFilter extends React.Component {
   }
 
   resolveFilters({ filters, data }) {
-    return filters
+    return _
+      .chain(filters)
       .map(({ resolveValue, ...filter }) => ({
         ...filter,
-        options: uniq(data.map(resolveValue)),
+        options: _
+          .chain(data)
+          .map(resolveValue)
+          .uniq()
+          .value(),
         setSelection: (newSelection) => this.updateSelection(filter.key, newSelection),
       }))
       .filter(({ options }) => options.length > 0)
+      .value()
   }
 
   injectSelections() {
-    return this.state.filters.map((filter) => ({
+    return _.map(this.state.filters, (filter) => ({
       ...filter,
       selection: this.state.selections[filter.key] || [],
     }))
   }
 
   filterData() {
-    return this.props.data.filter((elem) => this.props.filters.reduce(
+    return _.filter(this.props.data, (elem) => _.reduce(
+      this.props.filters,
       (prevData, { key, resolveValue }) => {
         const values = this.state.selections[key]
-        return prevData && (!values || !values.length || values.includes(resolveValue(elem)))
+        return prevData && (!values || !values.length || _.includes(values, resolveValue(elem)))
       },
       true
     ))
