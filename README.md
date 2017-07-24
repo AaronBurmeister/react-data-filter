@@ -75,6 +75,7 @@ import DataFilter from 'react-data-filter';
     },
     ...
   ]}
+  allowEmptyFilters={boolean}
 
   component={ReactComponent}
   render={(ownProps) => ReactNode}
@@ -99,6 +100,10 @@ import DataFilter from 'react-data-filter';
   It also needs a `resolveValue` function which resolves the value from a data entry which should be used for filtering.
   You can also pass your own properties as these will be passed to the underlying children and can be useful for the rendering of the filter controls.
   See [Child properties](#child-properties) for more details.
+
+* **allowEmptyFilters:boolean**
+
+  Specifies whether filters with no options should not be ignored.
 
 * **component:ReactComponent, render(ownProps):ReactNode, children:ReactNode**
 

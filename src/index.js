@@ -10,6 +10,7 @@ class DataFilter extends React.Component {
       key: PropTypes.string.isRequired,
       resolveValue: PropTypes.func.isRequired,
     })),
+    allowEmptyFilters: PropTypes.bool,
 
     ...renderProps,
   }
@@ -43,8 +44,8 @@ class DataFilter extends React.Component {
     this.setState({ selections: {} })
   }
 
-  resolveFilters({ filters, data }) {
-    return _
+  resolveFilters({ filters, data, allowEmptyFilters }) {
+    const result = _
       .chain(filters)
       .map(({ resolveValue, ...filter }) => ({
         ...filter,
@@ -55,8 +56,9 @@ class DataFilter extends React.Component {
           .value(),
         setSelection: (newSelection) => this.updateSelection(filter.key, newSelection),
       }))
-      .filter(({ options }) => options.length > 0)
       .value()
+    if (allowEmptyFilters) return result
+    return _.filter(result, ({ options }) => options.length > 0)
   }
 
   injectSelections() {
