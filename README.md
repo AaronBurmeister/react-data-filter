@@ -45,6 +45,10 @@ Your children will get following properties:
 
   This function can be used to clear all currently set filters.
 
+* **resetSelection:function**
+
+  This function can be used to reset all currently set filters to the `selections` prop.
+
 * **data:array**
 
   The filtered data.
@@ -76,6 +80,10 @@ import DataFilter from 'react-data-filter';
     ...
   ]}
   allowEmptyFilters={boolean}
+  selections={{
+    filterKey: [ selectedOption, ... ],
+    ...
+  }}
 
   component={ReactComponent}
   render={(ownProps) => ReactNode}
@@ -104,6 +112,13 @@ import DataFilter from 'react-data-filter';
 * **allowEmptyFilters:boolean**
 
   Specifies whether filters with no options should not be ignored.
+
+* **selections:object**
+
+  The initial selections and the value which [resetSelection()](#child-properties) resets to.
+
+  Each key of this object should match the key value of the filter which selection should be set.
+  The value of each key should be an array of the selected options.
 
 * **component:ReactComponent, render(ownProps):ReactNode, children:ReactNode**
 

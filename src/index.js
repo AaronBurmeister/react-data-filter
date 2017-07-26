@@ -11,28 +11,34 @@ class DataFilter extends React.Component {
       resolveValue: PropTypes.func.isRequired,
     })),
     allowEmptyFilters: PropTypes.bool,
+    selections: PropTypes.object,
 
     ...renderProps,
+  }
+
+  static defaultProps = {
+    selections: {},
   }
 
   constructor(props) {
     super(props)
     this.updateSelection = this.updateSelection.bind(this)
     this.clearSelection = this.clearSelection.bind(this)
+    this.resetSelection = this.resetSelection.bind(this)
     this.resolveFilters = this.resolveFilters.bind(this)
     this.injectSelections = this.injectSelections.bind(this)
     this.filterData = this.filterData.bind(this)
 
     this.state = {
       filters: this.resolveFilters(props),
-      selections: {},
+      selections: props.selections,
     }
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       filters: this.resolveFilters(nextProps),
-      selections: {},
+      selections: nextProps.selections,
     })
   }
 
@@ -42,6 +48,10 @@ class DataFilter extends React.Component {
 
   clearSelection() {
     this.setState({ selections: {} })
+  }
+
+  resetSelection() {
+    this.setState({ selections: this.props.selections })
   }
 
   resolveFilters({ filters, data, allowEmptyFilters }) {
@@ -84,10 +94,11 @@ class DataFilter extends React.Component {
 
     const filters = this.injectSelections()
     const clearSelection = this.clearSelection
+    const resetSelection = this.resetSelection
     const data = this.filterData()
 
     const { component, render, children, ...props } = this.props
-    const childProps = { ...props, filters, clearSelection, data }
+    const childProps = { ...props, filters, clearSelection, resetSelection, data }
 
     return resolveElement({ component, render, children }, childProps, none)
   }
