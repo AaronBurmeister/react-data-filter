@@ -80,6 +80,7 @@ import DataFilter from 'react-data-filter';
     ...
   ]}
   allowEmptyFilters={boolean}
+  combineFilters={(sum, filterResult) => boolean}
   selections={{
     filterKey: [ selectedOption, ... ],
     ...
@@ -112,6 +113,25 @@ import DataFilter from 'react-data-filter';
 * **allowEmptyFilters:boolean**
 
   Specifies whether filters with no options should not be ignored.
+
+* **combineFilters(sum, filterResult):boolean**
+
+  This function specifies how the relation between filters should be managed.
+  It is used to match the result of a filter with the other filters results.
+  It gets called for each filter in order to reduce their result into a single `boolean`.
+
+  `sum` is set to `undefined` for the first filter to be checked. For all other filters the value is the result of the already combined filters.
+
+  `filter` is set to `undefined` if the filter has no selection. Otherwise it is set to the result of the filter (`true` if matched, `false` otherwise).
+
+  The default value is `(sum = true, filter = true) => sum && filter` which expects all filters to match (`filter a && filter b && ...`) and handles filters without a selection as matched.
+
+  * Example for `and` WITHOUT empty selection matched:
+  `(sum = true, filter = false) => sum && filter`
+  * Example for `or` with empty selection matched:
+  `(sum = false, filter = true) => sum || filter`
+  * Example for `or` WITHOUT empty selection matched:
+  `(sum = false, filter = false) => sum || filter`
 
 * **selections:object**
 

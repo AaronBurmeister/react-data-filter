@@ -11,12 +11,14 @@ class DataFilter extends React.Component {
       resolveValue: PropTypes.func.isRequired,
     })),
     allowEmptyFilters: PropTypes.bool,
+    combineFilters: PropTypes.func,
     selections: PropTypes.object,
 
     ...renderProps,
   }
 
   static defaultProps = {
+    combineFilters: (sum = true, filter = true) => sum && filter,
     selections: {},
   }
 
@@ -82,11 +84,17 @@ class DataFilter extends React.Component {
     return _.filter(this.props.data, (elem) => _.reduce(
       this.props.filters,
       (prevData, { key, resolveValue }) => {
-        const values = this.state.selections[key]
-        return prevData && (!values || !values.length || _.includes(values, resolveValue(elem)))
+        const selection = this.state.selections[key]
+        const isSelection = selection && selection.length
+        const result = isSelection ? _.includes(selection, resolveValue(elem)) : undefined
+        const prevValue = prevData.init ? undefined : prevData.value
+        return {
+          init: false,
+          value: this.props.combineFilters(prevValue, result),
+        }
       },
-      true
-    ))
+      { init: true, value: true }
+    ).value)
   }
 
   render() {
