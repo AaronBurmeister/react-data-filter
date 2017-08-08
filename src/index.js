@@ -17,6 +17,8 @@ class DataFilter extends React.Component {
     ...renderProps,
   }
 
+  static propNames = Object.keys(DataFilter.propTypes);
+
   static defaultProps = {
     combineFilters: (sum = true, filter = true) => sum && filter,
     selections: {},
@@ -106,7 +108,13 @@ class DataFilter extends React.Component {
     const data = this.filterData()
 
     const { component, render, children, ...props } = this.props
-    const childProps = { ...props, filters, clearSelection, resetSelection, data }
+    const childProps = {
+      ...(_.omit(props, DataFilter.propNames)),
+      filters,
+      clearSelection,
+      resetSelection,
+      data,
+    }
 
     return resolveElement({ component, render, children }, childProps, none)
   }
