@@ -35,7 +35,7 @@ Your children will get following properties:
 
   An array of the filters.
   Each filter has the following fields:
-    - `key:string`: the unique key of the filter - this is internally used but can also be used in rendering
+    - `selectionKey:string`: the unique key of the selection which the filter uses
     - `options:array`: the possible filter options
     - `selection:array`: the currently selected filter options - this can be used to create controlled components (You can look into this [gist](https://gist.github.com/markerikson/d71cfc81687f11609d2559e8daee10cc) for more information on controlled and uncontrolled components)
     - `setSelection:function`: this function should be used to update the filter. It takes one argument, namely an array of the currently selected options
@@ -73,16 +73,18 @@ import DataFilter from 'react-data-filter';
   ]}
   filters={[
     {
-      key: string,
+      selectionKey: string,
       resolveValue: (dataEntry) => filterValue,
       ...filterProps,
+      // optional:
+      match: (selection, value) => boolean,
     },
     ...
   ]}
   allowEmptyFilters={boolean}
   combineFilters={(sum, filterResult) => boolean}
   selections={{
-    filterKey: [ selectedOption, ... ],
+    selectionKey: [ selectedOption, ... ],
     ...
   }}
 
@@ -105,8 +107,9 @@ import DataFilter from 'react-data-filter';
 * **filters:array**
 
   The filter specifications.
-  Each filter needs to have a unique `key` which is used for assigning internally.
+  A filter should specify a `selectionKey`. This is the unique key of the selection which the filter should use. If two filters have the same selectionKey, they share the same selection. This can become useful if you have one control which controls multiple filters.
   It also needs a `resolveValue` function which resolves the value from a data entry which should be used for filtering.
+  You can optionally pass the `match` function which compares the selection with the value resolved by `resolveValue`. If not specified, this function defaults to lodash's `includes` function which checks if the value is equal to one of the selected options.
   You can also pass your own properties as these will be passed to the underlying children and can be useful for the rendering of the filter controls.
   See [Child properties](#child-properties) for more details.
 
@@ -137,7 +140,7 @@ import DataFilter from 'react-data-filter';
 
   The initial selections and the value which [resetSelection()](#child-properties) resets to.
 
-  Each key of this object should match the key value of the filter which selection should be set.
+  The keys of this object are the selectionKeys specified in the `filters` property.
   The value of each key should be an array of the selected options.
 
 * **component:ReactComponent, render(ownProps):ReactNode, children:ReactNode**

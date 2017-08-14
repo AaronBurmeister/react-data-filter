@@ -4,12 +4,17 @@ import resolveElement, { renderProps } from 'react-resolve-element'
 import _ from 'lodash'
 
 class DataFilter extends React.Component {
+  static filterPropTypes = {
+    selectionKey: PropTypes.string.isRequired,
+    resolveValue: PropTypes.func.isRequired,
+    match: PropTypes.func,
+  }
+
+  static filterPropNames = Object.keys(DataFilter.filterPropTypes);
+
   static propTypes = {
     data: PropTypes.array,
-    filters: PropTypes.arrayOf(PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      resolveValue: PropTypes.func.isRequired,
-    })),
+    filters: PropTypes.arrayOf(PropTypes.shape(DataFilter.filterPropTypes)),
     allowEmptyFilters: PropTypes.bool,
     combineFilters: PropTypes.func,
     selections: PropTypes.object,
@@ -61,14 +66,15 @@ class DataFilter extends React.Component {
   resolveFilters({ filters, data, allowEmptyFilters }) {
     const result = _
       .chain(filters)
-      .map(({ resolveValue, ...filter }) => ({
-        ...filter,
+      .map(({ selectionKey, resolveValue, ...filter }) => ({
+        ...(_.omit(filter, DataFilter.filterPropNames)),
+        selectionKey,
         options: _
           .chain(data)
           .map(resolveValue)
           .uniq()
           .value(),
-        setSelection: (newSelection) => this.updateSelection(filter.key, newSelection),
+        setSelection: (newSelection) => this.updateSelection(selectionKey, newSelection),
       }))
       .value()
     if (allowEmptyFilters) return result
@@ -78,17 +84,17 @@ class DataFilter extends React.Component {
   injectSelections() {
     return _.map(this.state.filters, (filter) => ({
       ...filter,
-      selection: this.state.selections[filter.key] || [],
+      selection: this.state.selections[filter.selectionKey] || [],
     }))
   }
 
   filterData() {
     return _.filter(this.props.data, (elem) => _.reduce(
       this.props.filters,
-      (prevData, { key, resolveValue }) => {
-        const selection = this.state.selections[key]
+      (prevData, { selectionKey, resolveValue, match = _.includes }) => {
+        const selection = this.state.selections[selectionKey]
         const isSelection = selection && selection.length
-        const result = isSelection ? _.includes(selection, resolveValue(elem)) : undefined
+        const result = isSelection ? match(selection, resolveValue(elem)) : undefined
         const prevValue = prevData.init ? undefined : prevData.value
         return {
           init: false,
