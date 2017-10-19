@@ -9,8 +9,8 @@
     "test": "npm run compile && ./node_modules/.bin/mocha --compilers js:babel-core/register",
     "prepublish": "npm run compile",
     "optimize": "npm run optimize:src; npm run optimize:test",
-    "optimize:src": "echo Optimizing /src...; import-sort -s ./src; echo Optimized $? files",
-    "optimize:test": "echo Optimizing /test...; import-sort -s ./test; echo Optimized $? files"
+    "optimize:src": "echo Optimizing /src...; import-sort -os ./src; echo Optimized $? files",
+    "optimize:test": "echo Optimizing /test...; import-sort -os ./test; echo Optimized $? files"
   },
   "repository": {
     "type": "git",
