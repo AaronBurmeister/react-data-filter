@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+git@github.com:AaronBurmeister/react-data-filter.git"
+    "url": "git+git@github.com:hatsuo/react-data-filter.git"
   },
   "keywords": [
     "logical",
@@ -26,9 +26,9 @@
   "author": "Aaron Burmeister",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AaronBurmeister/react-data-filter/issues"
+    "url": "https://github.com/hatsuo/react-data-filter/issues"
   },
-  "homepage": "https://github.com/AaronBurmeister/react-data-filter#readme",
+  "homepage": "https://github.com/hatsuo/react-data-filter#readme",
   "devDependencies": {
     "babel-cli": "^6.9.0",
     "babel-core": "^6.9.0",
